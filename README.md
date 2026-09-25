@@ -1,5 +1,4 @@
-Current version: **1.0.3**
-
+![version](https://img.shields.io/badge/version-1.0.3-blue)
 # csv-fixtures-persistence
 
 ```text
