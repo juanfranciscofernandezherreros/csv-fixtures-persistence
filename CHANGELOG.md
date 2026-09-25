@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.5 - 2026-09-25
+
+- [patch] KAN-79 sustituye FixtureKey/FixtureValue locales por `basketball-event-contracts:1.0.2`.
+- [patch] Elimina generación Avro local y autentica GitHub Packages en CI.
+- [patch] Mantiene sin cambios el modelo de persistencia PostgreSQL.
+
+
 ## 1.0.4 - 2026-09-25
 
 - [patch] Refuerza AGENTS.md con lectura obligatoria por tarea, autonomía y prohibición absoluta de escrituras directas en main.
