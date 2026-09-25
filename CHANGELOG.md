@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.5 - 2026-09-25
+
+- [patch] KAN-79 sustituye los schemas locales `FixtureKey`/`FixtureValue` por `basketball-event-contracts:1.0.2`.
+- [patch] Elimina generación Avro local y configura CI con lectura autenticada desde GitHub Packages.
+- [patch] Mantiene exactamente los mismos namespaces y campos Avro, sin cambio de contrato Kafka.
+
 ## 1.0.4 - 2026-09-25
 
 - [patch] Refuerza AGENTS.md con lectura obligatoria por tarea, autonomía y prohibición absoluta de escrituras directas en main.
