@@ -6,6 +6,8 @@ import com.fernandez.fixtures.mapper.FixtureMapper;
 import com.fernandez.fixtures.repository.FixturesUpsertRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,5 +26,23 @@ class FixturesPersistenceServiceTest {
         new FixturesPersistenceService(repository, mapper).persist(value);
 
         verify(repository).upsert(entity);
+    }
+
+    @Test
+    void mapsAndPersistsKafkaBatchWithSingleJdbcBatch() {
+        var repository = mock(FixturesUpsertRepository.class);
+        var mapper = mock(FixtureMapper.class);
+        var firstValue = mock(FixtureValue.class);
+        var secondValue = mock(FixtureValue.class);
+        var first = new Fixtures();
+        var second = new Fixtures();
+
+        when(mapper.toEntity(firstValue)).thenReturn(first);
+        when(mapper.toEntity(secondValue)).thenReturn(second);
+
+        new FixturesPersistenceService(repository, mapper)
+                .persistBatch(List.of(firstValue, secondValue));
+
+        verify(repository).upsertBatch(List.of(first, second));
     }
 }
