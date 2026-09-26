@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 - 2026-09-26
+
+- [minor] KAN-105 aplica la estrategia común de errores Kafka de KAN-18.
+- [minor] Clasifica errores de datos/integridad como non-retryable y fallos transitorios de base de datos como retryable.
+- [minor] Configura retries/backoff y DLT `fixtures.parsed.DLT`.
+- [minor] Añade tests de clasificación de error permanente y transitorio.
+
+
 ## 1.0.5 - 2026-09-25
 
 - [patch] KAN-79 sustituye FixtureKey/FixtureValue locales por `basketball-event-contracts:1.0.2`.
