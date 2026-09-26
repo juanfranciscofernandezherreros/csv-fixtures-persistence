@@ -6,6 +6,8 @@ import com.fernandez.fixtures.repository.FixturesUpsertRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class FixturesPersistenceService {
     private final FixturesUpsertRepository fixtures;
@@ -19,5 +21,13 @@ public class FixturesPersistenceService {
     @Transactional
     public void persist(FixtureValue value) {
         fixtures.upsert(mapper.toEntity(value));
+    }
+
+    @Transactional
+    public void persistBatch(List<FixtureValue> values) {
+        if (values == null || values.isEmpty()) {
+            return;
+        }
+        fixtures.upsertBatch(values.stream().map(mapper::toEntity).toList());
     }
 }
