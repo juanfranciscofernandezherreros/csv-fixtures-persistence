@@ -7,13 +7,20 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ParsedFixturesConsumer {
     private final FixturesPersistenceService service;
-    public ParsedFixturesConsumer(FixturesPersistenceService service){this.service=service;}
 
-    @KafkaListener(topics="${app.kafka.topics.parsed-fixtures}",groupId="${spring.kafka.consumer.group-id}")
-    public void listen(ConsumerRecord<FixtureKey,FixtureValue> record){
-        service.persist(record.value());
+    public ParsedFixturesConsumer(FixturesPersistenceService service) {
+        this.service = service;
+    }
+
+    @KafkaListener(
+            topics = "${app.kafka.topics.parsed-fixtures}",
+            groupId = "${spring.kafka.consumer.group-id}")
+    public void listen(List<ConsumerRecord<FixtureKey, FixtureValue>> records) {
+        service.persistBatch(records.stream().map(ConsumerRecord::value).toList());
     }
 }

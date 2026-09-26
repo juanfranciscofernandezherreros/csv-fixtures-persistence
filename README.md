@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-1.2.0-blue)
+![version](https://img.shields.io/badge/version-1.3.0-blue)
 # csv-fixtures-persistence
 
 ```text
@@ -37,6 +37,16 @@ La política es **current-state upsert**:
 - redeliveries concurrentes del mismo evento convergen en el mismo estado.
 
 El contrato Avro compartido `FixtureValue` no contiene actualmente `sourceEventId`, por lo que FIXTURES no puede persistir trazabilidad de reimportación por ese identificador sin evolucionar primero el contrato. KAN-121 no inventa ese dato ni modifica el contrato compartido fuera de su alcance.
+
+## Persistencia batch
+
+KAN-40 aplica la fase de rendimiento de KAN-22 a FIXTURES.
+
+El consumer usa modo Kafka batch con `KAFKA_MAX_POLL_RECORDS=500` por defecto. Los registros de cada poll se mapean y persisten en una única llamada `JdbcTemplate.batchUpdate`, conservando el mismo `ON CONFLICT (match_id, country, competition) DO UPDATE` de KAN-121.
+
+PostgreSQL recibe además `reWriteBatchedInserts=true`, reduciendo round-trips sin introducir `saveAndFlush()` ni cambiar la frontera transaccional: si el batch falla, la transacción falla y Kafka puede redeliverarlo; la clave natural mantiene la idempotencia.
+
+La suite de integración mide 1.000 fixtures con escritura secuencial frente a JDBC batch y publica el throughput observado en el log de CI.
 
 ## Contratos Avro compartidos
 
