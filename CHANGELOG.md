@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 - 2026-09-26
+
+- [minor] KAN-121 define `(match_id, country, competition)` como clave natural de idempotencia para FIXTURES.
+- [minor] Sustituye `saveAndFlush()` por un upsert PostgreSQL atómico con `ON CONFLICT (match_id, country, competition) DO UPDATE`.
+- [minor] Documenta la política current-state y la ausencia actual de `sourceEventId` en el contrato Avro compartido.
+- [minor] Añade tests de integración para redelivery, reimportación y redelivery concurrente.
+
 ## 1.1.1 - 2026-09-26
 
 - [patch] KAN-105 captura errores de deserialización Avro mediante `ErrorHandlingDeserializer`.
