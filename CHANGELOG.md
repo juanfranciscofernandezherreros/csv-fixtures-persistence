@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 - 2026-09-26
+
+- [minor] KAN-40 activa consumo Kafka batch con un máximo configurable de 500 registros por poll.
+- [minor] Persiste cada lote mediante `JdbcTemplate.batchUpdate` conservando el upsert atómico de KAN-121.
+- [minor] Activa `reWriteBatchedInserts` en PostgreSQL y elimina round-trips innecesarios por mensaje.
+- [minor] Añade cobertura de semántica current-state en batch y benchmark de 1.000 filas secuencial vs batch.
+
+
 ## 1.2.0 - 2026-09-26
 
 - [minor] KAN-121 define `(match_id, country, competition)` como clave natural de idempotencia para FIXTURES.
