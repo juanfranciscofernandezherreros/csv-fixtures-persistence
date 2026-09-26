@@ -4,6 +4,10 @@ import com.fernandez.fixtures.entity.Fixtures;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
 @Repository
 public class FixturesUpsertRepository {
 
@@ -24,14 +28,26 @@ public class FixturesUpsertRepository {
     }
 
     public void upsert(Fixtures fixture) {
-        jdbcTemplate.update(
+        jdbcTemplate.update(UPSERT_SQL, ps -> bind(ps, fixture));
+    }
+
+    public void upsertBatch(List<Fixtures> fixtures) {
+        if (fixtures.isEmpty()) {
+            return;
+        }
+        jdbcTemplate.batchUpdate(
                 UPSERT_SQL,
-                fixture.getMatchId(),
-                fixture.getCountry(),
-                fixture.getCompetition(),
-                fixture.getEventTime(),
-                fixture.getHomeTeam(),
-                fixture.getAwayTeam()
-        );
+                fixtures,
+                fixtures.size(),
+                (ps, fixture) -> bind(ps, fixture));
+    }
+
+    private void bind(PreparedStatement ps, Fixtures fixture) throws SQLException {
+        ps.setString(1, fixture.getMatchId());
+        ps.setString(2, fixture.getCountry());
+        ps.setString(3, fixture.getCompetition());
+        ps.setString(4, fixture.getEventTime());
+        ps.setString(5, fixture.getHomeTeam());
+        ps.setString(6, fixture.getAwayTeam());
     }
 }
