@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-1.1.0-blue)
+![version](https://img.shields.io/badge/version-1.1.1-blue)
 # csv-fixtures-persistence
 
 ```text
@@ -29,3 +29,8 @@ KAN-105 aplica la política común de KAN-18 al consumo de `fixtures.parsed`.
 - `KAFKA_FIXTURES_PERSISTENCE_DLT_TOPIC`: permite cambiar el topic DLT.
 
 La publicación DLT conserva el registro original y los headers de diagnóstico generados por Spring Kafka.
+
+
+### Deserialización y DLT
+
+Los deserializadores Avro están envueltos con `ErrorHandlingDeserializer`, por lo que un payload corrupto o incompatible entra en el flujo normal de recuperación. La DLT `fixtures.parsed.DLT` acepta objetos Avro y `byte[]` originales, conserva los headers de diagnóstico, deja que Kafka seleccione una partición válida y propaga cualquier fallo de publicación en la propia DLT.
